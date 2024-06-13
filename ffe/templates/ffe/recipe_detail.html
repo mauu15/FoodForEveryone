@@ -2,6 +2,13 @@
 
 {% block extra_head %}
     <style>
+    
+            .card-img-top {
+            width: 100%;
+            height: 400px; /* Altezza fissa per rendere le immagini quadrate */
+            object-fit: cover; /* Ritaglia le immagini per riempire il contenitore */
+            object-position: center; /* Centra le immagini ritagliate */
+        }
 
         .recipe-image-container {
             max-height: 400px; /* Imposta un'altezza massima per la container dell'immagine */
