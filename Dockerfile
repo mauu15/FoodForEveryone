@@ -21,8 +21,8 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # Copia i file media nella cartella media
-RUN mkdir -p /app/media/
-COPY media /app/media/
+RUN mkdir -p /ffe/media/
+COPY media /ffe/media/
 
 # Comando di avvio dell'applicazione con Gunicorn
 CMD gunicorn mysite.wsgi
