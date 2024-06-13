@@ -1,3 +1,4 @@
+from django.contrib.auth.forms import PasswordChangeForm
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -57,6 +58,18 @@ def login(request):
 
     context = {"loginform": form}
     return render(request, "ffe/login.html", context=context)
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Importante per mantenere l'utente loggato dopo il cambio password
+            return redirect('profile')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'ffe/change_password.html', {'form': form})
 
 
 @login_required(login_url="my-login")

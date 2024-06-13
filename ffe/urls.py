@@ -23,7 +23,7 @@ urlpatterns = [
     path('user/<str:username>/', user_detail, name='user_detail'),
     path('profile/', views.profile, name='profile'),
     path('add-recipe/', views.add_recipe, name='add_recipe'),
-
+    path('change_password/', views.change_password, name='change_password'),
 ]
 
 
