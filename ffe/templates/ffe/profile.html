@@ -29,7 +29,7 @@
                         <div class="list-group-item">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex">
-                                    <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="img-thumbnail" style="width: 100px; height: auto; border: none; margin-right: 16px; object-fit: cover; object-position: center;">
+                                    <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="card-img-top" style="align-self: center; height: 100px; width: auto; border: none; margin-right: 16px; object-fit: cover; object-position: center;">
                                     <div class="ml-3">
                                         <a href="{% url 'recipe_detail' recipe.id %}" style="text-decoration: none; color: inherit;">
                                             <h5 class="mb-1">{{ recipe.title }}</h5>
