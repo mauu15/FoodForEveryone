@@ -34,7 +34,7 @@ def register(request):
         form = CreateUserForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("login")
+            return redirect("my-login")
 
     context = {"registerform": form}
     return render(request, "ffe/register.html", context=context)
