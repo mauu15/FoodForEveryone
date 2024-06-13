@@ -2,6 +2,14 @@
 
 {% block extra_head %}
 <style>
+
+    .card-img-top {
+    width: 100%;
+    height: 400px; /* Altezza fissa per rendere le immagini quadrate */
+    object-fit: cover; /* Ritaglia le immagini per riempire il contenitore */
+    object-position: center; /* Centra le immagini ritagliate */
+}
+    
     .py-5 {
         padding: 30px 0 !important;
     }
