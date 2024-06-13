@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+    <title>Preferiti - Food For Everyone</title>
+    <style>
+        /* Aggiungi regole CSS personalizzate */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content {
+            flex: 1;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5" style="padding: 30px">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <h1 class="mb-4">Preferiti</h1>
+                <div class="card-columns">
+                    <!-- Ciclo per mostrare le ricette preferite -->
+                    {% if user_favorites %}
+                        {% for recipe in user_favorites %}
+                            <div class="card" style="margin-bottom: 20px">
+                                <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ recipe.title }}</h5>
+                                    <p class="card-text">{{ recipe.description }}</p>
+                                    <a href="{% url 'recipe_detail' recipe.id %}" class="btn btn-primary">Dettagli</a>
+                                    <a href="{% url 'remove_favorite' recipe.id %}" class="btn btn-danger">
+                                        {% if user in recipe.favorited_by.all %}
+                                            Rimuovi dai Preferiti
+                                        {% else %}
+                                            Aggiungi ai Preferiti
+                                        {% endif %}
+                                    </a>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="container mt-4">
+                            <div class="row justify-content-center align-items-center" style="min-height: calc(100vh - 180px);">
+                                <div class="col-md-6 text-center">
+                                    <p>Non hai ancora aggiunto alcuna ricetta ai preferiti.</p>
+                                    <a href="{% url 'dashboard' %}" class="btn btn-success btn-lg">Esplora le ricette</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

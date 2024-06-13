@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<style>
+    .py-5 {
+        padding: 30px 0 !important;
+    }
+
+    .container {
+        margin-top: 0;
+        padding-top: 0;
+    }
+
+    header {
+        padding: 20px 0 !important;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<header class="bg-light text-dark py-5">
+    <div class="container text-center">
+        <h1 class="display-3">Benvenuti su Food For Everyone!</h1>
+        <p class="lead">Scopri, cucina e condividi le tue ricette preferite con la nostra community.</p>
+        <a href="{% url 'dashboard' %}" class="btn btn-success btn-lg">Esplora le ricette</a>
+    </div>
+</header>
+
+<section style="padding-top: 0" class="py-5">
+    <div style="padding-top: 0; margin-top: 0" class="container mt-5">
+        <h1 style="margin-bottom: 16px">Esplora le nostre ricette</h1>
+        <div class="row">
+            {% for recipe in popular_recipes %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ recipe.title }}</h5>
+                        <a href="{% url 'recipe_detail' recipe.id %}" class="btn btn-primary">Vedi ricetta</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

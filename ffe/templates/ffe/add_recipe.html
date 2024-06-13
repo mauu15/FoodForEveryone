@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5" style="margin: 20px">
+    <h2 class="text-center">Aggiungi una nuova ricetta</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+               <div>
+                    <label for="id_title" class="form-label mt-4">Titolo</label>
+                    <input type="text" class="form-control" id="id_title" name="title" placeholder="Inserisci titolo">
+                </div>
+                <div>
+                    <label for="id_description" class="form-label mt-4">Descrizione</label>
+                    <textarea class="form-control" id="id_description" name="description" rows="3" placeholder="Inserisci descrizione"></textarea>
+                </div>
+
+                <div>
+                    <label for="id_image" class="form-label mt-4">Immagine</label>
+                    <input type="file" class="form-control" id="id_image" name="image">
+                </div>
+                <div>
+                    <label for="id_ingredients" class="form-label mt-4">Ingredienti</label>
+                    <textarea class="form-control" id="id_ingredients" name="ingredients" rows="3" placeholder="Inserisci ingredienti">{{ form.ingredients.value }}</textarea>
+                </div>
+                <div>
+                    <label for="id_instructions" class="form-label mt-4">Istruzioni</label>
+                    <textarea class="form-control" id="id_instructions" name="instructions" rows="3" placeholder="Inserisci istruzioni">{{ form.instructions.value }}</textarea>
+                </div>
+                <div>
+                    <label for="id_preparation_time" class="form-label mt-4">Tempo di preparazione</label>
+                    <input type="text" class="form-control" id="id_preparation_time" name="preparation_time" placeholder="Inserisci tempo di preparazione" value="{{ form.preparation_time.value|default_if_none:'' }}">
+                </div>
+                <div>
+                    <label for="id_cooking_time" class="form-label mt-4">Tempo di cottura</label>
+                    <input type="text" class="form-control" id="id_cooking_time" name="cooking_time" placeholder="Inserisci tempo di cottura" value="{{ form.cooking_time.value|default_if_none:'' }}">
+                </div>
+
+                <div>
+                    <label for="id_servings" class="form-label mt-4">Porzioni</label>
+                    <input type="number" class="form-control" id="id_servings" name="servings" placeholder="Inserisci porzioni" min="1" value="{{ form.servings.value }}">
+                </div>
+                <div>
+                    <label for="id_category" class="form-label mt-4">Categoria</label>
+                    <select class="form-select" id="id_category" name="category">
+                        <option value="">Seleziona una categoria</option>
+                        <option value="Aperitivo">Aperitivo</option>
+                        <option value="Piatto Principale">Piatto Principale</option>
+                        <option value="Secondo Piatto">Secondo Piatto</option>
+                        <option value="Contorno">Contorno</option>
+                        <option value="Dessert">Dessert</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="id_difficulty" class="form-label mt-4">Difficoltà</label>
+                    <select class="form-select" id="id_difficulty" name="difficulty">
+                        <option value="">Seleziona la difficoltà</option>
+                        <option value="Facile">Facile</option>
+                        <option value="Media">Media</option>
+                        <option value="Difficile">Difficile</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary mt-4">Salva</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

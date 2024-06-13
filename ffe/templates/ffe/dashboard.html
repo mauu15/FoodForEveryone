@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+    <style>
+        /* Aggiungi regole CSS personalizzate */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content {
+            flex: 1;
+        }
+
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .description {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 4; /* Numero di linee da mostrare */
+            -webkit-box-orient: vertical;
+        }
+
+        .card-img-top {
+            object-fit: cover;
+            height: 300px; /* Imposta l'altezza dell'immagine */
+        }
+
+        .card {
+            height: 100%; /* Imposta l'altezza della card */
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8 text-center">
+                <h1>Benvenuto nella tua dashboard, {{ user.username }}!</h1>
+                <p>Qui puoi gestire le tue ricette, esplorare nuove idee culinarie e connetterti con altri appassionati di cucina.</p>
+            </div>
+        </div>
+    </div>
+
+<div class="container mt-5">
+    <h2>Utenti che stai seguendo</h2>
+    <ul class="list-group">
+        {% for followed_user in followed_users %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ followed_user.username }}
+                <form action="{% url 'user_detail' username=followed_user.username %}" method="get">
+                    <button type="submit" class="btn btn-success">Vai al profilo</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+
+
+
+
+<div class="col-md-12">
+    <div class="container mt-4">
+        <h2>Ricette degli utenti che segui</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4" style="padding: 16px">
+            {% for recipe in followed_recipes %}
+            <div class="col">
+                <div class="card h-100">
+                    <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}">
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-title">Autore: <a href="{% url 'user_detail' recipe.author.username %}">{{ recipe.author.username }}</a></h6>
+                        <p class="card-text flex-grow-1 description">{{ recipe.description }}</p>
+                        <a href="{% url 'recipe_detail' recipe.id %}" class="btn btn-primary mt-auto">Dettagli</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

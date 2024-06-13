@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+    <style>
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .description {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 4; /* Numero di linee da mostrare */
+            -webkit-box-orient: vertical;
+        }
+
+        .card-img-top {
+            object-fit: cover;
+            height: 300px; /* Imposta l'altezza dell'immagine */
+        }
+
+        .card {
+            height: 100%; /* Imposta l'altezza della card */
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+    <div class="row justify-content-center">
+        {% if recipes %}
+            <div class="col-md-10 text-center">
+                <h1>Risultati della ricerca</h1>
+                <p>Mostrando risultati per: "{{ query }}"</p>
+            </div>
+        {% else %}
+            <div class="col-md-10 text-center" style="padding: 20px 0">
+                <h1>Nessun risultato</h1>
+                <p>Non ci sono risultati per: "{{ query }}"</p>
+                <a href="{% url 'dashboard' %}" class="btn btn-success btn-lg">Esplora le ricette</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="row justify-content-center">
+        {% for recipe in recipes %}
+            <div class="col-12 col-md-4" style="margin-bottom: 20px">
+                <div class="card h-100">
+                    <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ recipe.title }}</h5>
+                        <p class="card-text flex-grow-1 description">{{ recipe.description }}</p>
+                        <a href="{% url 'recipe_detail' recipe.id %}" class="btn btn-primary mt-auto">Vedi ricetta</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="it-IT">
+<head>
+    <meta charset="UTF-8">
+    <title>Aggiungi Commento</title>
+    <link rel="stylesheet" href="https://bootswatch.com/5/flatly/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Aggiungi un commento</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Aggiungi Commento</button>
+        </form>
+    </div>
+</body>
+</html>

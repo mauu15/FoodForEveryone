@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<style>
+    .card-body {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .description {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 4 !important; /* Numero di linee da mostrare */
+        -webkit-box-orient: vertical;
+    }
+
+    .card-img-top {
+        object-fit: cover;
+        height: 300px; /* Imposta l'altezza dell'immagine */
+    }
+
+    .card {
+        height: 100%; /* Imposta l'altezza della card */
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-8" style="padding: 30px;">
+    <div class="row justify-content-center">
+        <div class="col-md-6" style="border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px;">
+            <h1 class="text-center">Dettagli Utente</h1>
+            <form method="post" action="{% url 'follow_user' user.username %}">
+                {% csrf_token %}
+                <p class="text-center mb-4">Nome utente: <strong>{{ user.username }}</strong></p>
+                <p class="text-center">Numero di ricette aggiunte: <strong>{{ num_recipes }}</strong></p>
+                {% if request.user != user %}
+                <div class="text-center">
+                    {% if is_following %}
+                    <button type="submit" class="btn btn-danger">Non seguire più</button>
+                    {% else %}
+                    <button type="submit" class="btn btn-primary">Segui</button>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <h2 class="mt-4 text-center">Ricette aggiunte</h2>
+            <div class="container mt-4">
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    {% for recipe in recipes %}
+                    <div class="col">
+                        <div class="card h-100">
+                            <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">{{ recipe.title }}</h5>
+                                <p class="card-text flex-grow-1 description">{{ recipe.description }}</p>
+                                <a href="{% url 'recipe_detail' recipe.id %}" class="btn btn-primary mt-auto">Dettagli</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+    </div>
+</div>
+{% endblock %}

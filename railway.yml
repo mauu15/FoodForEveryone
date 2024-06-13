@@ -1,0 +1,8 @@
+services:
+  web:
+    buildCommand: |
+      python -m pip install --upgrade pip setuptools wheel
+      python manage.py collectstatic --noinput
+    runCommand: gunicorn mysite.wsgi:application --bind 0.0.0.0:$PORT
+    env:
+      PYTHONUNBUFFERED: 1

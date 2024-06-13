@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+    <style>
+
+        .recipe-image-container {
+            max-height: 400px; /* Imposta un'altezza massima per la container dell'immagine */
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .recipe-details .col-md-6 {
+            width: calc(50% - 20px); /* Imposta la larghezza delle colonne a metà, con un po' di spazio tra di esse */
+            margin-right: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .recipe-details .col-md-6 {
+                width: 100%; /* In modalità mobile, le colonne occupano tutta la larghezza */
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+}
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12" style="height: max-content;">
+                <h1 class="mb-4">{{ recipe.title }}</h1>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="recipe-image-container">
+                            <img src="{{ recipe.image.url }}" class="card-img-top recipe-image" alt="{{ recipe.title }}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center">
+                                <strong>Tempo di preparazione:</strong>
+                                <span class="badge bg-primary rounded-pill">{{ recipe.preparation_time }}</span>
+                            </li>
+                            <li class="list-group-item list-group-item-secondary d-flex justify-content-between align-items-center">
+                                <strong>Tempo di cottura:</strong>
+                                <span class="badge bg-primary rounded-pill">{{ recipe.cooking_time }}</span>
+                            </li>
+                            <li class="list-group-item list-group-item-primary d-flex justify-content-between align-items-center">
+                                <strong>Porzioni:</strong>
+                                <span class="badge bg-primary rounded-pill">{{ recipe.servings }}</span>
+                            </li>
+                            <li class="list-group-item list-group-item-info d-flex justify-content-between align-items-center">
+                                <strong>Categoria:</strong>
+                                <span class="badge bg-info rounded-pill">{{ recipe.get_category_display }}</span>
+                            </li>
+                            <li class="list-group-item
+                                {% if recipe.difficulty == 'Facile' %}
+                                    list-group-item-success
+                                {% elif recipe.difficulty == 'Media' %}
+                                    list-group-item-warning
+                                {% elif recipe.difficulty == 'Difficile' %}
+                                    list-group-item-danger
+                                {% endif %}
+                                d-flex justify-content-between align-items-center">
+                                <strong>Difficoltà:</strong>
+                                {% if recipe.difficulty == 'Facile' %}
+                                    <span class="badge rounded-pill bg-success">{{ recipe.get_difficulty_display }}</span>
+                                {% elif recipe.difficulty == 'Media' %}
+                                    <span class="badge rounded-pill bg-warning">{{ recipe.get_difficulty_display }}</span>
+                                {% elif recipe.difficulty == 'Difficile' %}
+                                    <span class="badge rounded-pill bg-danger">{{ recipe.get_difficulty_display }}</span>
+                                {% endif %}
+                            </li>
+                            <li class="list-group-item list-group-item-light d-flex justify-content-between align-items-center">
+                                <strong>Voto medio:</strong>
+                                <span class="badge bg-primary rounded-pill">{{ recipe.average_rating }}</span>
+                            </li>
+                        </ul>
+                        <div class="col-md-6" style="padding-top: 16px">
+                            {% if recipe.author %}
+                                <p>Creato da:
+                                    <strong>
+                                        {% if request.user.is_authenticated and request.user != recipe.author %}
+                                            <a href="{% url 'user_detail' recipe.author.username %}">{{ recipe.author.username }}</a>
+                                        {% elif request.user.is_authenticated and request.user == recipe.author %}
+                                            <a href="{% url 'dashboard' %}">{{ recipe.author.username }}</a>
+                                        {% else %}
+                                            {{ recipe.author.username }}
+                                        {% endif %}
+                                    </strong>
+                                </p>
+                            {% else %}
+                                <p>Creatore non specificato</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 text-end" style="display: flex">
+                            {% if user.is_authenticated %}
+                                Autenticato come: {{ user.username }} <br>
+                                Autore della ricetta: {{ recipe.author.username }} <br> <!-- Utilizza l'username dell'autore della ricetta -->
+                            {% else %}
+                                Non autenticato
+                            {% endif %}
+                        </div>
+                        <div style="align-self: center; padding-top: 20px">
+                            <a href="{% url 'toggle_favorite' recipe.id %}" class="btn
+                                {% if user in recipe.favorited_by.all %}
+                                    btn-danger"> <!-- Se l'utente ha già aggiunto questa ricetta ai preferiti -->
+                                {% else %}
+                                    btn btn-outline-warning" <!-- Se l'utente non ha ancora aggiunto questa ricetta ai preferiti -->
+                                {% endif %}
+                                {% if user in recipe.favorited_by.all %}
+                                    Rimuovi dai Preferiti
+                                {% else %}
+                                    Aggiungi ai Preferiti
+                                {% endif %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4">
+            <div style="padding-top: 20px">
+                <div class="card border-light mb-3" style="width: auto;">
+                    <div class="card-header"><strong>Descrizione</strong></div>
+                    <div class="card-body">
+                        <p class="card-text">{{ recipe.description }}</p>
+                    </div>
+                </div>
+            </div>
+            <p><strong>Ingredienti:</strong><br>{{ recipe.ingredients | linebreaks }}</p>
+            <p><strong>Istruzioni:</strong> <br>{{ recipe.instructions | linebreaks }}</p>
+        </div>
+        <h3 class="mt-4">Commenti</h3>
+        <div>
+            {% for comment in recipe.comments.all %}
+                <p><span class="badge bg-primary"><strong>{{ comment.user.username }}:</strong></span> {{ comment.content }}</p>
+            {% empty %}
+                <p>Sii il primo a commentare questa ricetta!</p>
+            {% endfor %}
+        </div>
+        <div class="container mt-4" style="margin-bottom: 20px">
+            <form id="comment-form" method="post" action="{% url 'recipe_detail' recipe.id %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="id_content" class="form-label">Aggiungi un commento</label>
+                    <textarea class="form-control" id="id_content" name="content" rows="3" placeholder="Inserisci il tuo commento qui"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Aggiungi Commento</button>
+            </form>
+        </div>
+    </div>
+
+
+<script>
+$(document).ready(function() {
+    $('#comment-form').on('submit', function(event) {
+        event.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: formData,
+            success: function(response) {
+                if (response.success) {
+                    // Aggiorna dinamicamente la sezione dei commenti senza ricaricare la pagina
+                    alert('Commento aggiunto con successo!');
+                    // Qui puoi aggiungere il commento alla lista dei commenti senza ricaricare la pagina
+                    // Ad esempio, inserendo il commento direttamente nel DOM usando jQuery
+                    var comment = $('<p><span class="badge bg-primary"><strong>' + response.username + ':</strong></span> ' + response.content + '</p>');
+                    $('#comments-section').append(comment);
+                    // Pulisci il campo del form dopo l'aggiunta del commento
+                    $('#id_content').val('');
+                } else {
+                    // Gestisci gli errori del form se necessario
+                    alert('Si è verificato un errore durante l\'aggiunta del commento.');
+                }
+            },
+            error: function(xhr, errmsg, err) {
+                // Gestisci gli errori di rete o del server se necessario
+                alert('Si è verificato un errore durante l\'invio della richiesta.');
+            }
+        });
+    });
+});
+</script>
+
+
+
+{% endblock %}
