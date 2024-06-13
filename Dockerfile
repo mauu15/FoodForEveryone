@@ -20,9 +20,9 @@ RUN pip install -r requirements.txt
 # Copia il resto del codice dell'applicazione
 COPY . .
 
-# Copia i file media nella cartella media
-RUN mkdir -p /ffe/media/
-COPY media /ffe/media/
+# Crea la cartella media e copia i file media
+RUN mkdir -p /app/mysite/ffe/media/
+COPY mysite/ffe/media /app/mysite/ffe/media/
 
 # Comando di avvio dell'applicazione con Gunicorn
-CMD gunicorn mysite.wsgi
+CMD gunicorn mysite.wsgi:application --bind 0.0.0.0:$PORT
