@@ -18,5 +18,45 @@
         </div>
     </div>
 </div>
-    
+
+<div class="container mt-5">
+    <h2 class="text-center">Le tue ricette</h2>
+    <div class="row justify-content-center">
+        {% if user_recipes %}
+            <div class="col-md-12">
+                <div class="list-group" style="margin-bottom: 20px">
+                    {% for recipe in user_recipes %}
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex">
+                                    <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="img-thumbnail" style="width: 100px; height: auto; border: none; margin-right: 16px; object-fit: cover; object-position: center;">
+                                    <div class="ml-3">
+                                        <a href="{% url 'recipe_detail' recipe.id %}" style="text-decoration: none; color: inherit;">
+                                            <h5 class="mb-1">{{ recipe.title }}</h5>
+                                        </a>
+                                        <p class="mb-1">{{ recipe.description|truncatewords:30 }}</p>
+                                        <small>Pubblicata il {{ recipe.created_at|date:"d F Y" }}</small>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <form method="post" action="{% url 'edit_recipe' recipe.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-primary btn-sm me-2">Modifica</button>
+                                    </form>
+                                    <form method="post" action="{% url 'delete_recipe' recipe.id %}" onsubmit="return confirm('Sei sicuro di voler eliminare questa ricetta?');">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger btn-sm">Elimina</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <p class="text-center">Non hai ancora aggiunto nessuna ricetta.</p>
+        {% endif %}
+    </div>
+</div>
+
 {% endblock %}

@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-from .views import add_recipe, recipe_detail, add_comment, toggle_favorite, user_detail
+from .views import add_recipe, recipe_detail, add_comment, toggle_favorite, user_detail, delete_recipe
 
 urlpatterns = [
 
@@ -24,6 +24,8 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('add-recipe/', views.add_recipe, name='add_recipe'),
     path('change_password/', views.change_password, name='change_password'),
+    path('recipe/<int:recipe_id>/delete/', delete_recipe, name='delete_recipe'),
+    path('edit_recipe/<int:recipe_id>/', views.edit_recipe, name='edit_recipe'),
 ]
 
 

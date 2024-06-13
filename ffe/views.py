@@ -9,7 +9,7 @@ from .models import Recipe, Comment, Follower
 # - Authentication models and functions
 
 from django.contrib.auth.models import auth, User
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 
 from django.contrib.auth.decorators import login_required
 
@@ -273,9 +273,11 @@ def user_detail(request, username):
     return render(request, 'ffe/user_detail.html', context)
 
 
-@login_required
+@login_required(login_url="my-login")
 def profile(request):
     categories = Recipe.CATEGORY_CHOICES  # Ottieni le categorie
+    user = request.user
+    user_recipes = Recipe.objects.filter(author=user)
     if request.method == 'POST':
         form = ProfileForm(request.POST, instance=request.user)
         if form.is_valid():
@@ -288,5 +290,33 @@ def profile(request):
     context = {
         'form': form,
         'categories': categories,  # Aggiungi le categorie al contesto
+        'user_recipes': user_recipes,
     }
     return render(request, 'ffe/profile.html', context)
+
+
+@login_required(login_url="my-login")
+def delete_recipe(request, recipe_id):
+    recipe = get_object_or_404(Recipe, id=recipe_id, author=request.user)
+    if request.method == 'POST':
+        recipe.delete()
+        messages.success(request, 'Ricetta eliminata con successo.')
+        return redirect('profile')
+    else:
+        messages.error(request, 'Azione non consentita.')
+        return redirect('profile')
+
+
+@login_required(login_url="my-login")
+def edit_recipe(request, recipe_id):
+    recipe = get_object_or_404(Recipe, id=recipe_id, author=request.user)
+
+    if request.method == 'POST':
+        form = RecipeForm(request.POST, request.FILES, instance=recipe)
+        if form.is_valid():
+            form.save()
+            return redirect('recipe_detail', recipe_id=recipe.id)
+    else:
+        form = RecipeForm(instance=recipe)
+
+    return render(request, 'ffe/edit_recipe.html', {'form': form})
