@@ -1,0 +1,62 @@
+.card-img-top {
+    width: 100%;
+    height: 400px; /* Altezza fissa per rendere le immagini quadrate */
+    object-fit: cover; /* Ritaglia le immagini per riempire il contenitore */
+    object-position: center; /* Centra le immagini ritagliate */
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.show {
+    display: block;
+}
+
+footer {
+    position: relative !important;
+    bottom: 0 !important;
+    width: 100%;
+    height: 80px;
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: auto;
+}
+
+
+/* Riduce i bordi laterali del container principale */
+.container {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* Aggiunge spaziatura tra le colonne delle carte delle ricette */
+.mb-4 {
+    margin-bottom: 1.5rem; /* Puoi regolare questo valore a tuo piacimento */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.content {
+    flex: 1;
+}
+
+@media (max-width: 1024px) {
+    .navbar-brand {
+        display: none;
+    }
+
+}
