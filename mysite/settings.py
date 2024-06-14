@@ -55,7 +55,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = "mysite.urls"
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://web-production-57d3.up.railway.app',
+    'https://food-for-everyone.up.railway.app',
 ]
 
 TEMPLATES = [
