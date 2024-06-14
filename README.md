@@ -19,7 +19,7 @@
 **Profilo Utente**
 - Modifica Profilo: Gli utenti possono modificare le proprie informazioni personali, come nome, cognome e mail.
 - Cambio password: E' possibile cambiare la password, confermando prima quella prececente.
-- Visualizzazione delle Ricette: Mostra le ricette pubblicate dall'utente e fornisce opzioni per modificarle o eliminarle.
+- Gestione delle Ricette: Mostra le ricette pubblicate dall'utente e fornisce opzioni per modificarle o eliminarle.
 
 
 **Pubblicazione e Gestione delle Ricette**
