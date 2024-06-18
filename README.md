@@ -9,7 +9,7 @@
 - Accesso: Accesso sicuro e autenticazione tramite credenziali.
 
 **Homepage**
-- Esplorazione: Qui chiunque può visualizzare un numero limitato di ricette presenti all'interno del sito.
+- Esplorazione: Qui chiunque può visualizzare le ricette presenti all'interno del sito.
 - Ricerca Avanzata: E' possibile cercare le ricette all'interno di tutto il sito per categoria o per keyword.
 - Visualizzazione Dettagliata: Visualizzazione dettagliata di ciascuna ricetta con immagini, ingredienti, istruzioni e altri dettagli.
 
