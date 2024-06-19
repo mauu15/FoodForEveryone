@@ -38,3 +38,7 @@
 * HTML, CSS, JavaScript: Tecnologie per lo sviluppo del frontend e l'interazione utente.
 * [Bootswatch](https://bootswatch.com/flatly/): Utilizzato per il design responsivo e lo stile del sito.
 * SQLite: Database integrato per la gestione dei dati delle ricette e degli utenti.
+
+---
+### Nota sulle Immagini
+Tutte le immagini presenti sul sito web sono di mia proprietà e quindi non soggette a copyright.
